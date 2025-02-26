@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ACCA-F3(Financial Accounting) - Practice MCQ</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-image: url('background1.jpg');
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .container {
+      width: 90%;
+      max-width: 500px;
+      background: #f9fafae0;
+      padding: 50px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(46, 241, 7, 0.76);
+      text-align: left;
+    }
+    h1 {
+      text-align: center;
+    }
+    .footer {
+      margin-top: 20px;
+      font-size: 20px;
+      color: #34f10efb;
+      text-align: center;
+    }
+    .timer {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      display: none; /* Hide the timer initially */
+    }
+    .question {
+      margin: 20px 0;
+      background-color: blue;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .options {
+      list-style: none;
+      padding: 0;
+    }
+    .options li {
+      margin-bottom: 10px;
+    }
+    button {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .correct {
+      color: green;
+      font-weight: bold;
+      background-color: lightgreen;
+    }
+    .incorrect {
+      color: red;
+      font-weight: bold;
+      background-color: lightcoral;
+    }
+    .hint {
+      font-size: 14px;
+      font-weight: normal;
+    }
+    .hint.correct {
+      color: green;
+    }
+    .hint.incorrect {
+      color: red;
+    }
+    .answer-container {
+      max-height: 400px; /* Set max height for scrolling */
+      overflow-y: auto; /* Enable vertical scrolling */
+      padding-right: 10px; /* Space for scroll */
+    }
+    .button:hover {
+            background-color: #24f140;
+            transform: scale(1.1); /* Make the button slightly larger when hovered */
+        }
+        .button:active {
+            background-color: #1beb59;
+        }
+
+        /* Custom background color for the 'Go to Home Page' button */
+        .button-highlight {
+            background-color: #eee127; /* Background color for the Home Page button */
+            color: #000; /* Change the text color to black for better visibility */
+        }
+        .button-highlight:focus {
+            outline: 3px solid #FFD700; /* Add a border when focused */
+        }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="button button-highlight"><h3>Back Home Page</h3></a>
+  <div class="container">
+    <h1 id="app-title" style="color: green;">ACCA-F3(Financial Accounting) - Practice MCQ</h1>
+    <div id="question-count" style="margin-bottom: 20px;">
+      <label for="question-select">Select number of questions:</label>
+      <select id="question-select">
+        <option value="10">10 Questions</option>
+        <option value="15" selected>15 Questions</option>
+        <option value="20">20 Questions</option>
+      </select>
+    </div>
+    <div class="timer" id="timer">Time Left: 20:00</div>
+    <button id="start-btn">Start Practice</button>
+    <div id="quiz" style="display: none;"></div>
+    <button id="next-btn" style="display: none;">Next</button>
+    <div class="footer"><b>App made by: Rupak Kushwaha</b></div>
+  </div>
+
+  <script>
+    const questions = [
+      { question: "Which of the following calculates a traders net profit for a period?", options: ["Closing net assets - drawings + capital introduced — opening net assets", "Closing net assets + drawings + capital introduced — opening net assets", "Closing net assets + drawings — capital introduced — opening net assets", "Closing net assets - drawings - capital introduced — opening net assets"], answer: 2 },
+      { question: "The purpose Of a Statement Of Financial Position is to show:", options: ["the assets of the business and the claims against those assets", "the amount the business could be sold for in liquidation", "a clear and definite estimate of what a business is realty worth", "the amount the business could be sold for as a going concem"], answer: 0 },
+      { question: "A grocery business has net assets of $64,800 at 31 January 2008 and the net profit for the year to 31 January 2008 vvas $30,600. On 31 August 2007 the proprietor introduced additional capital of $7,200. He also withdrew $960 per month and on 24 December 2007 withdrew goods amounting to $840.<br><br><b>What were the net assets at I February 2007?</b>", options: ["$50,040", "$13,920", "$39,360", "$51,720"], answer: 2 },
+      { question: "Which of the following are differences between sole traders and limited liability companies? <br><br>1) A sole traders' financial statements are private; a companVs financial statements are sent to shareholders and are publicly filed<br> 2) Only companies have capital invested into the business<br> 3) A sole trader is fully and personally liable for any losses that the business might make; a company's shareholders are not personally liable for any losses that the company might make.", options: ["1,2 and 3", "1 and 3 only", "1 and 2 only", "2 and 3 only"], answer: 1 },
+      { question: "At 31 December 2008 the following require inclusion in a companys financial statements:<br>(1) On 1 January 2008 the company made a loan of $28,800 to an employee, repayable on 1 January 2009, charging interest at 2 per cent per year. On the due date she repaid the loan and paid the Wnole of the interest due on the loan to that date. <br>(2) The company has paid insurance $21 ,600 in 2008, covering the year ending 31August 2009. <br> (3) On 1 January 2009 the oompany received rent from a tenant $9,600 covering the six months to 31 December 2008.<br><br><b>For tiese items, what total figures should be induded in companys Statement of Financial Position at 31 December 2008?</b>", options: ["Current assets $53,376; Current liabilities $NIL", "Current assets $24,576; Current liabilities $NIL", "Current assets $88,976; Current liabilities $14,400", "Current assets $24,000; Current liabilities $29,376"], answer: 0 },
+      { question: "How should a contingent liability be included in a company's financial statements if the likelihood of a transfer of economic benefits to settle it is remote?", options: ["No disdosure or provision is required.", "Disclosed by note no provision being made"], answer: 0 },
+      { question: "The following items have to be considered in finalising the financial statements of Q, a limited liability company: <br>1) The company gives varranties on its products. The company's statistics show that about 6% of sales give rise to a warranty claim. <br>(2) The company has guaranteed the overdraft of another company. The likelihood of a liability arising under the guarantee is assessed as possible. <br><br><b>What is the correct action to be taken in the financial statements for these items?</b>", options: ["Item 1: disclose by note only, Item 2: no action", "Item 1: create a provision; Item 2: disclose by note only", "Item 1: disclose by note 0nly, Item 2: disclose by note onbr", "Item 1: create a provision; Item 2: create a provision"], answer: 2 },
+      { question: "What is the correct double entry to record the depreciation charge for a period?", options: ["Dr Accumulated depreciation; Cr Depreciation expense", "Dr Depreciaticn expense; Cr Accumulated depreciation"], answer: 1 },
+      { question: "A company has a year end of 31 January each year. <br>They purchased a car for $12,000 on 1 January 2008 and sold it for S5,000 on 31 March 2012. <br>Their depreciation policy is to charge 20% reducing balance, Wth a full years charge in the year of purchase and none in the year of sale. <br><b>What was the profit or loss on the sale of the car?</b>", options: ["$l,144.00 (loss)", "$1,854.27 (profit)", "$1,067.84(profit)", "$84.80(profit)"], answer: 2 },
+      { question: "On 1 January 2000 Krin Co. bought a machine for $70,000. It was estimated that the machine's useful life would be 7 years and its residual value $7,000. Tvvo years later the useful life was revised to three remaining years and at 31 December 2003 the machine was sold for $30,000.<br><br><b>What was the profit on disposal?</b>", options: ["$20,000", "$12,000", "$8,000", "$2,000"], answer: 2 },
+      { question: "At 30 June 2007 a companys allowance for receivables was $93,600. At 30 June 2008 trade receivables totalled $l,240,800. It decided to Mite o debts totalling $88,800 and to adjust the allowance for receivables to the equivalent of 5 per cent of the trade receivables based on past events.<br><br> <b>What figure should appear in the Statement of Profit or Loss for the year ended 30 June 2008 for these items?</b>", options: ["$52,800", "$57,240", "$146,400", "$57,600"], answer: 0 },
+      { question: "At 31 December 2013 a company had receivables of $140,000 and an allovance for receivables of $7,000.<br> At 31 December 2014 they had receivables of $185,000. <br>It vvas then decided to write off a debt of $4,000 as irrecoverable, and to have a general allowance of 5% of remaining debts.<br><br> <b>What is the irrecoverable and doubtful debts expense in the Statement of profit or loss for the year ended 31 December 2014?</b>", options: ["$13,050", "$2,050", "$9,050", "$6,050"], answer: 3 },
+      { question: "At 31 December 2005 the ledger of X Co. included a $5,376 allowance for receivables. During the year ended 31 December 2006 irrecoverable debts of $2,040 were written off. Receivables balances at 31 December 2006 totalled $l73,760 and the company wished to carry forward a general allowance of 2%.<br><br> <b>The total charge for irrecoverable debts and change in allowance for receivables in the 2006 Statement of Profit or Loss is</b>:", options: ["$3,904.80", "$98.40", "$139.20", "$5,515.20"], answer: 2 },
+      { question: "Yv Co's trial balance shows a receivables' account balance of $50,000, this includes the following: <br>(1) $2,500 from Mike who has gone into liquidation <br>(2) debts of $500 + S1,500 which are to be specially alloyed for <br>(3) cash received from Ken of $1,800 mich had previously been written off <br>(4) cash received from John of $2,900 Wnich had previously been alloywed for <br><br><b>What is the revised receivables figure?</b>", options: ["$49,300", "$50,200", "$45,500", "$52,200"], answer: 0 },
+      { question: "There are a number of different statements within a set of financial statement.<br> <b>Which of the following is LEAST likely to be included within a set of financial statements?</b>", options: ["Statement of Profit or Loss", "Statement of Cash Flows", "Statement of key business ratios", "Statement of Financial Position"], answer: 2 },
+      { question: "How a business operates will determine the legal framework it faces and the sources of funds it can access.<br> <b>Which of the following statements is FALSE?</b> ", options: ["A business may operate as a limited company rather than as a sole trader for tax reasons", "A partnership can only be formed if a partnership agreement is drawn up.", "A limited company, not its shareholders, has legal ownership of its own assets.", "Sole traders often use bank overdrafts as a significant source of finance."], answer: 1 },
+      { question: "<b>Naima is a sole trader who runs a grocery business. Which of the following is most likely to be interested in Naima's financial statements?<b/>", options: ["Naima's auditors", "Naima's customers", "Naima's shareholders", "Naima's bank manager"], answer: 3 },
+      { question: "<b>Which of the following is NOT a component of financial statements?</b>", options: ["A statement of profit or loss and other comprehensive income", "A cash flow forecast", "A statement of changes in equity", "Accounting policies and explanatory notes"], answer: 1 },
+      { question: "Which of the following users of financial statements has least need of published financial information?", options: ["Potential investors and their advisers", "Directors and management", "Employees and their representatives", "Customers and suppliers"], answer: 1 },
+      { question: "Zan buys a vehicle for $12,000 on credit. If the correct debit entry is to the vehicle account, where is the credit entry posted?", options: ["Bank", "Payables", "Receivables", "Capital"], answer: 1 },
+      { question: "Which of the following statements is correct?", options: ["A non-current asset is a tangible asset", "A non-current asset is initially recorded at cost", "A non-current asset is depreciated annually", "A non-current asset is owned"], answer: 1 },
+      { question: "Which one of the following items should be classified as asset expenditure?", options: ["Service agreement costs for computer equipment", "Installation costs for an air-conditioning system", "Cost of a three-year manufacturer's warranty", "Purchases of cars for resale"], answer: 1 },
+      { question: "Which one of the following is NOT a liability?", options: ["Accrued expenses", "Bank overdraft", "Drawings", "Trade payables"], answer: 2 },
+      { question: "Which one of the following is NOT one of the key objectives of the International Sustainability Standards Board (ISSB)", options: ["To develop standards for a global baseline of sustainability disclosures", "To meet the needs of governments and other stakeholders interested in monitoring a business's contribution to climate change", "To enable companies to provide comprehensive sustainability information to global capital markets", "To meet the information needs of investors"], answer: 1 },
+      { question: "Corporate governance guidance states that financial statements should provide a balanced, unbiased view of how the company has performed and its position.<br><br>To which ethical concept do these requirements relate?", options: ["Objectivity", "Professional competence", "Due care", "Confidentiality"], answer: 0 },
+      { question: "Which of the following statements concerning the Conceptual Framework is correct?", options: ["It is an IFRS Standard", "It does not define elements of financial statements", "It specifies standards for measurement and disclosure of items in financial statements", "It specifies standards for measurement and disclosure of items in financial statements"], answer: 2 },
+      { question: "What is the underlying assumption for the preparation of general purpose financial statements?", options: ["Accrual accounting", "Going concern", "Materiality", "Prudence"], answer: 1 },
+      { question: "Tariq took delivery of goods one month ago and is about to pay the amount owed to the supplier <br>Which of the following business documents would Tariq send the supplier with the payment?", options: ["Debit note", "Purchase order", "Statement", "Remittance advice"], answer: 3 },
+      { question: "Which one of the following statements concerning a computerized accounting system is correct?", options: ["Able to produce output reports from ledger systems", "May only be purchased off the shelf", "Its objective is to prevent and detect fraud and error", "Eliminates the use of journal entries"], answer: 0 },
+      { question: "A business uses a computerized accounting system, with an integrated sales and purchases system. The bank and cash module does not download bank transactions automatically from the bank's systems. <br>Which of the following transactions would have to be performed using a manual journal entry? ", options: ["The issue of a sales credit note", "The receipt of a purchase invoice", "The receipt of a credit note from a supplier", "The receipt of a payment from a customer"], answer: 3 },
+      { question: "Which of the following documents will all be found in a typical sales/ receivables system?", options: ["Standing order, goods despatch note, customer statement", "Sales order, goods received note, remittance advice", "Sales invoice, goods despatch note, remittance advice", "Sales invoice, goods received note, customer statement"], answer: 2 },
+      { question: "Due to a pricing error, a business charges a customer $750 for goods that should have been invoiced at $570. <br>Which of the following documents could be raised to correct this? ", options: ["A credit note", "A debit note", " A direct debit", "A sales invoice"], answer: 0 },
+      { question: "During the three months ended 30 June 20X2, John makes sales (including sales tax) of $55,000 and purchases (excluding sales tax) of $33,000. <br>Assuming that all transactions are subject to sales tax at 10%, how much does John owe the tax authority at 30 June 20X2? ", options: ["$1700", "$2,000", "$2,200", "$2,500"], answer: 0 },
+      { question: "Which of the following statements about discounts received is/are true? <br>1. When a settlement discount is offered the purchase is recognized net of the discount <br>2. When a trade discount is received a purchase is recognized at the net amount ", options: ["1 only", "2 only", "Both 1 and 2", "Neither 1 nor 2"], answer: 1 },
+      { question: "Which of the following concerning recording petty cash is true? ", options: ["The record of petty cash transactions in the ledger does not collect information valuable to the operations of the manager.", "Recording petty cash acts as a means of internal control", " Approvers for petty cash transactions should be provided by the owner of the business", "There is no need to record petty cash if it is replenished using the imprest system"], answer: 1 },
+      { question: "Lin's business is being sued by a customer for $20,000. The lawyer advising the business has said that the customer has a good case and it is likely that Lin will have to pay $20 ,000 in damages and a further $4,000 in legal fees. <br> What is the amount of the provision that needs to be recognized in the financial statements of Lin's business? ", options: ["$NIL", "$4,000", "$20,000", "$24,000"], answer: 3 },
+      { question: "Which of the following defines a provision in accordance with IAS 37 Provisions, Contingent Liabilities and Contingent Assets?", options: ["A liability of uncertain timing or amount", "A possible obligation arising from past events that is of uncertain timing or amount", "An adjustment to the carrying amount of assets", "A present obligation which is not recognized"], answer: 0 },
+      { question: "An item of inventory was purchased for $20. The selling price has fallen to $14 and further costs of $2 will be incurred before. What is the net realizable value of the inventory?", options: ["$12", "$14", "$20", "$22"], answer: 0 },
+      { question: "At the end of its accounting period a business erroneously excluded goods bought on credit from its closing inventory It also failed to record the purchase of those goods in its accounting records.<br>The effect of these omissions is to understate which of the following?", options: ["Cost of sales and current assets", "Gross profit and current liabilities", "Current assets only", "Current assets and current liabilities"], answer: 3 },
+      { question: "Which of the following statements about inventory records for financial accounting purposes are correct? <br>1. When continuous inventory records are kept, there is no need to count physical quantities <br>2. When physical quantities are recorded at the period end, there is no need to maintain continuous records ", options: ["1 only", "2 only", "Both 1 and 2", "Neither 1 nor 2"], answer: 1 },
+      { question: "Sakura purchased a machine for her business for $20,000 on 1 January 20X4 and paid an additional $1,000 to have the machine installed. Sakura estimates that the machine will have a useful life of eight years and will have a residual value of $3,000. Sakura uses straight-line depreciation and uses pro rata depreciation in the year an asset is purchased. <br>What is the depreciation charge (calculated to the nearest S) in respect of the machine for the year ended 30 June 20X4? ", options: ["$1,063", "$1,125", "$2,125", "$2,250"], answer: 1 },
+      { question: "Abena owns a business that has one property. The property originally cost $200,000 and has been depreciated at 2% a year. At 31 December 20X3, the accumulated depreciation account includes 10 years' worth of depreciation. The property has a market value of $230,000 on 31 December 20X3, which is the year end for the business- Abena decides to revalue the property in the financial statements for the year ended 31 December 20X3.<br>What is the adjustment required to the accumulated depreciation account to reflect this revaluation?", options: ["A debit of $40,000", "A credit of $40,000", "A debit of $70,OOO", "A credit of $70,000"], answer: 0 },
+      { question: "XYZ Co undertakes a development project which has incurred $1,500 ,000 of expenditure that can be capitalised in accordance with IAS 38- It is expected that the knowledge gained from the development project will be available to use on a commercial basis by the business on 1 July and will be used for a period of five years. XYZ Co has a policy of pro rata depreciation and amortisation.<br>How much will the profit of XYZ Co for the year ended 31 March fall as a result of the development expenditure?", options: ["$0", "$225,000", "$300,000", "$1,500,000"], answer: 1 },
+      { question: "Which one of the following is an example of an intangible asset?", options: ["A lease of land", "A registered trademark", "Royalty receipts", "An investment in a listed company"], answer: 1 },
+      { question: "IAS 38 provides examples of research and development activities, for example: <br>1. Formulating new products <br>2. Testing pre-production prototypes <br>3. Designing tools involving new technology <br>4. Constructing a pilot plant <br>Which of these examples are development activities? ", options: ["1,2 and 3", "1,2 and 4", "1,3 and 4", "2,3 and 4"], answer: 3 },
+      { question: "In what circumstance should straight-line amortisation be applied to an intangible asset?", options: ["A pattern of consumption cannot be determined reliably", "Its residual value is assumed to be zero", "The amortisation expense will be included in the carrying amount of another asset", "Its useful life depends on the useful life of other assets which are amortised or depreciated on a straight-line basis"], answer: 0 },
+      { question: "A company has incurred the following costs in operating a pilot plant for the manufacture of a new product<br>1. Amortisation of a licence granted to manufacture the product<br>2. Expenditure on material consumed in the operation of the plant<br>3. Costs incurred in training staff to operate equipment in the plant<br>4. Depreciation of equipment in the pilot plant<br><br>Which of these examples are development activities?", options: ["1, 2 and 3", "1, 2 and 4", "1, 3 and 4", "2, 3 and 4"], answer: 1 },
+      { question: "In January 20X4, a business pays $4,200 for insurance to cover the period from 1 January to 31 December The business prepares its financial statements to 30 September each year. What adjustment is required at the year end to the insurance expense for the year ended 30 September ", options: ["Accrual of $1,050", "Prepayment of $1,050", "Accrual of $3, 150", "Prepayment of $3, 150"], answer: 1 },
+      { question: "On 5 May 20X6 Tomas pays a rent bill of $3,600 for the 18 months ended 30 June What is the charge to profit or loss and the amount to be carried in the statement of financial position in respect of rent for the year ended 31 March ", options: ["$2,400 with prepayment of $600", "$2,400 with accrual of $1 ,200", "$3,000 with accrual of $600", "$3,000 with prepayment of $600"], answer: 0 },
+      { question: "ONE of the following descriptions defines the time period during which an event occurring after the reporting period might arise?", options: ["Events that occur between the reporting date and the date of the annual general meeting.", "Events that occur between the reporting date and the date on which the financial statements are authorised for issue.", "Events that occur during the three months following the reporting date.", "Events that occur during the six months following the reporting date."], answer: 1 },
+      { question: "Which of the following material events occurring after the end of the reporting period are adjusting events?<br>1. Sales of inventory for less than cost<br>2. Payment received from a customer whose debt had been written off<br>3. Sale of a subsidiary company<br>4. A flood in the warehouse destroying inventory", options: ["1 and 2", "2 and 3", "3 and 4", "1 and 4"], answer: 0 },
+      { question: "Which of the following events between the reporting date and the date the financial statements are authorised for issue must be adjusted in the financial statements?", options: ["Declaration of ordinary dividends", "Decline in market value of investments", "Discovery of a fraud revealing that inventory had been stolen", "Announcement of a major restructuring"], answer: 2 },
+      { question: "Jimbo Co has authorised share capital of 2 million ordinary (equity) shares with a par value of 50 cents each. 1.6 million of these have been issued, although only 50% of the par value has been called up. <br>What is the amount included for ordinary share capital in Jimbo Co's Statement of Financial Position? ", options: ["$400,000", "$500,000", "$800,000", "$900,000"], answer: 0 },
+      { question: "Clipo Co has issued share capital of 500,000 $1 ordinary (equity) shares. All shares are fully paid up. On 1 October a 2 for 5 rights issue is offered to the shareholders at an issue price per share of $2.60. The shareholders all take up their rights. <br><br>What is the effect of the rights issue on the share premium account?", options: ["Increases it by $320,000", "Decreases it by $320, 000", "Increases it by $520,000", "Decreases it by $520,000"], answer: 0 },
+      { question: "A company has 50,000, 50 cent 6% irredeemable preference shares that have been in issue for a number of years.<br>How will the dividend payment be treated in the financial statements for the year ended 31 December 20X8?", options: ["Finance cost of $3,000", "Appropriation of profit of $3,000", "Finance cost of $1 ,500", "Appropriation of profit of $1 ,500"], answer: 3 },
+      { question: "Which of the following would cause a company's profit for the year to increase?", options: ["Issue of 100,000 ordinary shares at a premium of 2%", "Revaluation of a freehold property from $70,000 to $100 ,000", "Disposal of a fork-lift truck which originally cost $15,000 and has a carrying amount of $9,250 for $8,500", "Receipt of $25 from a customer previously written off as irrecoverable"], answer: 3 },
+      { question: "In which financial statements will dividends paid during the year be presented?", options: ["Cash flow statement and statement of comprehensive income", "Cash flow statement and statement of changes in equity", "Statement of financial position and statement of changes in equity", "Statement of comprehensive income and statement of financial position"], answer: 1 },
+      { question: "Sam has been reading about the purpose and principles of producing a trial balance.<br>Which of the following statements about the trial balance is NOT correct?", options: ["There is a legal requirement to produce a trial balance.", "The trial balance is extracted from the general ledger.", "The total of the debit column should equal the total of the credit column.", "The trial balance is prepared before the financial statements are produced."], answer: 0 },
+      { question: "Riley runs his own business, keeping records of sales and expenses only Total sales invoices for the year were $320,000, on which he made a gross profit of $80,000.<br>Which of the following is the cost structure used by Riley?", options: ["20% Margin", "20% Mark-up", "25% Margin", "25% Mark-up"], answer: 2 },
+      { question: "On 30 June 20X7 a business had net assets of $74,000 compared with $62,000 on 1 July During the year ended 30 June 20X7 the proprietor drew $11,000 out of the business and the business paid his annual subscription to the proprietor sports club of $2,000.<br>What was the profit made by the business for the year ended 30 June", options: [" $1,000", "$12,000", "$25,000", "$27,000"], answer: 2 },
+      { question: "Which of the following items will appear in the trial balance as debit balances?", options: [" Share capital", "Prepayments", "Tax payable", "purchase returns"], answer: 1 },
+      { question: "A manufacturing company's depreciation policy for plant and machinery in its factory is straight-line over five years to reflect the way the assets are used.<br>How would this depreciation charge be classified in the Statement of Profit or Loss and Other Comprehensive Income?", options: ["Administrative expenses", "Distribution costs", "Cost of sales", "Finance costs"], answer: 2 },
+      { question: "Which one of the following represents cost of goods sold in a statement of profit or loss?", options: ["Purchases — closing inventory + opening inventory", "Purchases — opening inventory + closing inventory", "Opening inventory + purchases + closing inventory", "Closing inventory + purchases - opening inventory"], answer: 0 },
+      { question: "In which one of following circumstance can 'fair presentation' in accordance with IFRS be presumed?", options: ["The financial statements comply with IFRS", "IFRS has been appropriately applied with additional disclosures where necessary", "IFRS has been applied in so far that it does not conflict with local GAAP", "The financial statements provide relevant, reliable, comparable and understandable information"], answer: 1 },
+      { question: "The management of ZiZi intends to liquidate the company in the last quarter of On what basis should the financial statements for the year ended 30 June be prepared?", options: ["Going concern with no specific disclosure of material uncertainties", "Going concern with specific disclosure of material uncertainties", "On a basis other than going concern with disclosure of that fact", "On a basis other than going concern with disclosure of that fact and reasons"], answer: 3 },
+      { question: "The Statement of Cash Flows includes all kinds of cash receipts and payments that relate to the business.<br>Which of the following items would NOT be included as a cash flow in the Statement of Cash Flows? ", options: ["Dividends paid to shareholders", "Proceeds of a rights issue", "Loss on sale of a motor vehicle", "Payment for a new building"], answer: 2 },
+      { question: "Bintalish sold equipment for a profit of $70,000 in 20X1 The original cost of the equipment was $600 ,000 and its accumulated depreciation was $450, 000.<br> What figure would be included as receipts from the sale of equipment in the Statement of Cash Flows?", options: ["$80,000", "$150,000", "$220,000", "$20,000"], answer: 2 },
+      { question: "Which of the following items could legitimately appear in a company's cash flow statement?<br>1.Disposal proceeds from the sale of a company car<br>1.The theft of items of inventory<br>3. Recovery of a debt previously written off<br>4. Dividends received", options: ["1, 2 and 3", "1, 2 and 4", "1, 3 and 4", "2, 3 and 4"], answer: 2 },
+      { question: "A number of different terms are used for investments by one business in another.<br>Which of the following statements is FALSE?", options: ["A group can only exist if there is a parent-subsidiary relationship", "A subsidiary need not be a company", "A trade investment is not a subsidiary or an associate", "A parent controls a subsidiary if it receives fixed returns on its investment"], answer: 3 },
+      { question: "Pembroke Co purchased an 80% shareholding in Saundersfoot Co on 1 January In the consolidated financial statements of the Pembroke Group, what is the correct formula for calculating the profit for the year attributable to the owners of Pembroke?", options: ["Group profit for the year + Non-controlling interest share", "Group profit for the year — Non-controlling interest share", "Group profit for the year", "Pembroke profit for the year + Non-controlling interest share"], answer: 1 },
+      { question: "Tomas owns 65% of the shares in Drew Drew owes Tomas $5,000. Tomas has receivables of $300,000 and Drew has receivables of $130,000.<br>What are the consolidated receivables for Tomas?", options: ["$435,000", "$425,000", "$381,250", "$379,500"], answer: 1 },
+      { question: "Which of the following factors could cause a company's gross profit percentage on sales to fall below the expected level?<br>1. Overstatement of the opening inventory valuation<br>2. The incorrect inclusion in purchases of invoices relating to goods received from suppliers in the following period<br>3. The incorrect inclusion in sales of invoices relating to goods dispatched to customers in the following period<br>4. Increased discounts received from suppliers", options: ["1 and 2", "1 and 3", "2 and 4", "3 and 4"], answer: 0 },
+      { question: "Which of the following factors would cause a company's gearing ratio to fall? <br>1. 1 for 1 bonus issue of ordinary shares <br>2. I for 2 rights issue of ordinary shares <br>3. An issue of loan notes <br>4. An upward revaluation of land and buildings ", options: ["1 and 2", "1 and 3", "2 and 4", "3 and 4"], answer: 2 },
+      { question: "Which of the following could improve a company's gearing? ", options: ["Restructuring loans to obtain a lower interest rate & Making a bonus issue of ordinary shares", "Revaluing property upwards", "Paying suppliers more quickly"], answer: 1 },
+      { question: "Which of the following statements about sole traders is TRUE?", options: ["Sole traders can vote themselves a dividend as a form of payment", "There is separate legal distinction between the owner's assets and the business assets ", "The business can be sold as a going concern by its owner", "Sole traders cannot employ anyone else to do some work"], answer: 2 },
+      { question: "Bridge Co is a rival business to River Co.<br><br>Which ONE piece of financial information from River Co's financial statements is Bridge Co most likely to pay the most attention to each year? ", options: ["Amount of trade receivables", "Amount of long-term debt", "Amount of non-current assets", "Gross profit percentage"], answer: 3 },
+      { question: "Which of the following are features of any partnership?", options: ["Owner-management, joint liability", "Limited liability, owner-management", "Separate legal entity, limited liability", "Joint liability, separate legal entity"], answer: 0 },
+      { question: "Which of the following statements correctly describes the concept of duality? ", options: ["Each business transaction increases two accounts by the same amount", "Each business transaction decreases two accounts by the same amount", " Each business transaction increases one account and decreases another ", "Each business transaction has two effects on the accounts"], answer: 3 },
+      { question: "Which of the following expressions correctly shows the accounting equation at the end of the first accounting period? ", options: ["Net assets = Capital introduced + Profit + Drawings", "Assets = Capital introduced + Profit — Liabilities", "Assets = Capital introduced — Loss — Drawings - Liabilities", "Net assets = Capital introduced — Loss — Drawings"], answer: 3 },
+      { question: "Which ONE of the following expressions can be used to find the amount of drawings taken from a sole trader's business during an accounting period? ", options: ["Opening net assets - Closing net assets + Capital introduced + Net profit for the period ", "Opening net assets - Closing net assets — Capital introduced + Net profit for the period ", "Closing net assets — Opening net assets + Capital introduced + Net profit for the period ", "Closing net assets — Opening net assets — Capital introduced + Net profit for the period "], answer: 0 },
+      { question: "What journal entry is required to record goods taken from inventory by the owner of a business? ", options: ["Debit Drawings and Credit Purchases", "Debit Sales and Credit Drawings", "Debit Drawings and Credit Inventory", "Debit Purchases and Credit Drawings"], answer: 0 },
+      { question: "Which of the following is represented by the residual interest in the assets of the entity after deducting all its liabilities? ", options: ["Income", "Profit", "Gains", "Equity"], answer: 3 },
+      { question: "What is defined by the following statement?<br>'A present economic resource controlled by an entity as a result of past events.' ", options: ["Income", "An expense", " A liability", "An asset"], answer: 3 },
+      { question: "Which ONE of the following is NOT an appropriation of profit?", options: ["Goods taken from a business by a sole trader for personal use", "Interest payments to providers of finance", "Dividends paid to shareholders", "Salaries paid to partners"], answer: 1 },
+      { question: "Which of the following correctly defines equity per the IFRS Conceptual Framework? ", options: ["Shares traded on the stock market", "A situation where all employees are treated equally and paid the same hourly rate ", "The capital introduced into a business by the owner", "The residual interest in the assets of the entity after deducting its liabilities "], answer: 3 },
+      { question: "Which activity would happen immediately prior to the issue of an IFRS to check that the standard is workable and of appropriate quality? ", options: ["Release of a discussion paper to encourage debate about the accounting issue ", "IFRS Interpretations Committee would promote its usage", "It would be trialled in the UK and comments invited", "An exposure draft would be released inviting readers to comment"], answer: 3 },
+      { question: "Which ONE of the following statements defines the phrase 'going concern' as it relates to a business? ", options: ["The business will continue in existence for the foreseeable future", " The business is currently profitable and liquid", "The business will continue in eistence for the next five years", "The business can pay its debts as they fall due"], answer: 0 },
+      { question: "Which ONE of the following international accounting regulatory bodies takes account of the needs of emerging economies and small to medium-sized entities? ", options: ["IFRS Foundation", "IASB", "IFRS Advisory Council", "IFRS Interpretations Committee"], answer: 0 },
+      { question: "Majid matches his purchase order with the goods received note and the invoice before he pays his supplier. <br><br>Which ONE of the following qualitative characteristics relates to Majid's accounting documentation? ", options: ["Timeliness", "Understandability", "Verifiability", "Materiality"], answer: 2 },
+      { question: "Which ONE of the following accounting treatments shows the application of the accruals concept? ", options: ["Charging rent to the statement of profit or loss on the basis of time rather than on how much has been paid during the year. ", "Recording the commercial reality of the control of an asset rather than its legal ownership. ", "Preparing financial statements as if the business will continue for the foreseeable future. ", "Recognising only business transactions and not personal transactions. "], answer: 0 },
+      { question: "One of the characteristics of IASB's Conceptual Framework for Financial Reporting is that financial information is faithfully represented <br><br>Which of the following is NOT an example of faithful representation?", options: ["Materiality", "Free from error", " Neutrality", "Completeness"], answer: 0 },
+      { question: "What is the main purpose of the IFRS Conceptual Framework for Financial Reporting? ", options: ["To assist users in interpreting information contained in financial statements", "To assist preparers of financial statements in applying standards", "To assist national standard setting bodies in developing national standards ", "To assist the IASB in developing and reviewing standards"], answer: 3 },
+      { question: "Which of the following principles underlie double entry bookkeeping?", options: ["Accounting equation, separate legal entity concept, duality concept", "Accruals concept, accounting equation, business entity concept", "Accounting equation, business entity concept, duality concept", "Accruals concept, business entity concept, duality concept"], answer: 2 },
+      { question: "Which of the following statements is a benefit to businesses adopting computerised accounting system to record financial information? ", options: ["lower total cost of implementation", "eradicates threats to security and theft", "information recorded is likely more accurate", "computerised systems are more user-friendly"], answer: 2 },
+      { question: "Which of the following is not a feature of computerised accounting systems? ", options: ["Allows back-up of data in the event of lost files", "Integrated with other management systems to observe transaction trails", "Provides real-time management reports", "Multiple users can use the accounting software remotely"], answer: 3 },
+      { question: "Liu purchased goods for $560 net of sales tax. Sales tax is 20%. Which of the following statements about Liu's sales tax is true? ", options: ["Liu paid $112 output tax", "Liu paid $112 input tax", "Liu paid $93 direct tax", "Liu paid $93 cumulative tax"], answer: 1 },
+      { question: "Sales returns of $500 have arrived at Akash's business. These sales were made on credit. What impact will these sales returns have on the accounts? ", options: ["Sales balance will decrease and the bank balance will decrease", "Sales retums account will increase and the bank balance will decrease", "Sales retums account will increase and receivables balance will", "Sales balance will decrease and receivables balance will increase"], answer: 2 },
+      { question: "Which ONE of the following items represents a payment out of petty cash? ", options: ["Purchase of a printer for office use for $800", "Purchase of milk for office use for $5", " Payment of a permanently employed part-time employee's wages of $200", "Receipt of $1 from staff for postage stamps"], answer: 1 },
+      { question: "At the end of Zena wrote off a debt of $4,000 owed by customer A During 20X6 customer A unexpectedly paid this debt. <br><br> What are the journal entries to record the recovered debt? ", options: ["DR Trade receivables $4,000 CR Irrecoverable debt expense $4,000", "DR Bank $4,000 CR Trade receivables $4,000", "DR Irrecoverable debt expense $4,000 CR Trade receivables $4,000", "DR Bank S4,000 CR Irrecoverable debt expense $4,000"], answer: 3 },
+      { question: "A supplier statement shows an outstanding balance of $3, 750. The business's record of supplier outstanding balance is $3,950. <br><br>What could be a possible reason for the difference? ", options: ["The supplier allowed a cash discount of S200 that was not entered into the ledgers ", "The supplier sent an invoice worth S200 that the business has not received", "The business has paid S200 that was not accounted for in the statement ", "Goods worth $200 were retumed to the supplier that has not been accounted for"], answer: 0 },
+      { question: "Which of the following is a disadvantage for a business of offering customers credit facilities? ", options: ["Seller increases revenue", "May lead to compulsive buying habits by the customer", "May require additional security or guarantee", "Buyer obtains and can use purchased item immediately"], answer: 2 },
+      { question: "At the reporting date, future obligations to transfer economic benefits may be classified as: <br>1. liabilities <br>2. provisions <br>3. contingent liabilities. <br><br>Which of the above are recognised in the statement of financial position?", options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"], answer: 0 },
+      { question: "Ali has bought $2, 000 of inventory on credit. <br><br>How will this transaction affect the accounts of Ali's business?", options: [" Purchases will increase by $2,000 and payables will decrease by $2,000", "Purchases will increase by $2,000 and the bank account will decrease by $2,000", " Payables will increase by $2,000 and the bank account will decrease by $2,000 ", "Payables will increase by $2,000 and purchases will increase by $2,000"], answer: 3 },
+      { question: "Vlad's business started the year with 240 units of inventory with a value of $2,400. During the year Vlad purchased 4,800 units costing $57,600. 4,200 units were sold for S126,000. <br><br>Assuming the opening inventory was sold first, what gross profit was made by Vlad during this accounting period?", options: ["$68,400", "$76,080", "$60,720", "$75,600"], answer: 1 },
+      { question: "Which ONE of the following statements describes the purpose of an asset register?", options: ["To provide a record of the double entry posted when each asset is purchased", "To provide summary information about each class of asset", "To provide detailed information about intangible assets only", "To provide a memorandum record of all assets"], answer: 3 },
+      { question: "Desmond bought a van for his business for $25,000 on 1 March 20X6. His depreciation policy is based on 25% reducing balance, with a pro- rata basis used in the year of purchase and the year of sale. <br><br>What is the carrying amount of the van included in the statement of financial position as at 31 December.", options: ["$12,500", "$14,844", "$15,234", "$19,792"], answer: 1 },
+      { question: "A company purchased equipment for $80,000 on 1 July 20X3. The company's accounting year end is 31 December and it has a policy to charge a full year's depreciation in the year of purchase. Equipment is depreciated on the reducing balance basis at 25% per annume <br><br>What is the carrying amount of the equipment at 31 December ", options: ["$18,984", " $25,313", "$29,531", "$33,750"], answer: 1 },
+      { question: "Ezra adjusts his year-end financial statements to reflect an accrual of $680 for water costs. <br><br>What is the effect of the accrual for water costs on the net profit and net assets of Ezra's business? ", options: ["Increase net profit by $680 and increase net assets by $680", "Increase net profit by $680 and decrease net assets by $680", "Decrease net profit by $680 and decrease net assets by $680", "Decrease net profit by $680 and increase net assets by $680"], answer: 2 },
+      { question: "Ibuku is a sole trader who rents a workshop to make his products. He pays rent in advance on 31 Jan, 30 April, 31 July and 31 October. Ibuku's business has a year end of 31 December. Rent was initially $1,800 per quarter but this rose by 10% on 1 May <br><br>How much should Ibuku include for rent in his statement of profit or loss and other comprehensive income? ", options: ["$7,200", "$7,680", "$7,740", "$7,920"], answer: 1 },
+      { question: "Bob has paid $2,500 for IO months' hire (or rental) of equipment. This payment is the only record made in his accounts for the hire. At the year-end he still owes for the remaining two months. <br><br>Which of the following journals correctly show the entry that Bob must make in his accounts? ", options: ["DR Hire expenses $500, CR Accruals $500", "DR Accruals $500, CR Hire expenses $500", "DR Prepayments $500, CR Hire expenses $500", "DR Hire expenses $500, CR Prepayments $500"], answer: 0 },
+      { question: "Which ONE of the following descriptions defines the time period during which an event occurring after the reporting period might arise? ", options: ["Events that occur between the reporting date and the date of the annual general meeting. ", "Events that occur between the reporting date and the date on which the financial statements are authorised for issue.", "Events that occur during the three months following the reporting", "Events that occur during the six months following the reporting date."], answer: 1 },
+      { question: "AB Co issued 400,000 50-cent ordinary shares for S550,000 for cash. How should this issue be recorded in the equity section of the statement of financial position?", options: ["CR Ordinary share capital $550,000", "CR Ordinary share capital $400,000 CR Share premium $150,000", "CR Ordinary share capital $200,000 CR Share premium $350,000", "CR Ordinary share capital $550,000 DR Share premium $350,000"], answer: 2 },
+      { question: "West Co has issued 250,000 bonus ordinary $0.20 shares. Which of the following accounting entries correctly records this bonus issue?", options: ["DR Share premium $250,000, CR Share capital $250,000", "DR Retained earnings $250,000, CR Share capital $250,000", "DR Share premium $50,000, CR Capital redemption reserve $50,000", "DR Retained earnings $50,000, CR Share capital $50,000"], answer: 3 },
+      { question: "Mingyue posted an insurance invoice for $3,400 incorrectly to distribution costs instead of administrative expenses. The invoice has since been settled. <br><br>Which journal entry should be posted to correct this error?", options: ["DR Administrative expenses CR Distribution costs", "DR Distribution costs CR Administrative expenses", "DR Administrative expenses CR Bank", "DR Other payables CR Distribution costs"], answer: 0 },
+      { question: "Kin recorded a sale of $6,670 by debiting receivables $6,670 and crediting sales $6,760. The transposition error meant the trial balance did not balance so Kin included a suspense account to force it to balance. <br><br>Which journal entry should be made to correct the transposition error?", options: ["DR Sales $90 CR Suspense account $90", "DR Suspense account $90 CR Sales $90", "DR Receivables $90 CR Suspense account $90", "DR Sales $90 CR Receivables $90"], answer: 0 },
+      { question: "Which ONE of the following errors will give rise to the creation of a suspense account?", options: ["Inventory is overstated due to damage to some products", "Electricity cost has been charged to administration costs rather than cost of sales", "Sales retums have been debited to sales ledger rather than the sales returns ledger", "Bank interest has been charged to finance costs but not included in the cash account"], answer: 3 },
+      { question: "In which ONE of the following sections of the statement of financial position would you find provisions?", options: ["Non-current assets", "Current assets", "Liabilities", "Equity"], answer: 2 },
+      { question: "Which ONE of the following items would be included within current liability?", options: ["Bank loan repayable in two years", "Accumulated depreciation", "Allowance for receivables", "Bank overdraft"], answer: 3 },
+      { question: "What comparative information must be disclosed in accordance with IAS 1 Presentation of Financial Statements? ", options: ["All numerical and narrative information for the previous period", "All numerical information only", "Previous period narrative which is relevant to the current period", "Previous period statement of financial position and statement of comprehensive income only"], answer: 2 },
+      { question: "A company has issued shares in exchange for shares in a subsidiary. The shares issued were worth $150,000. <br><br>Which of the following options describes the correct treatment in the statement of cash flows for the issue of shares in the company?", options: ["$150,000 cash inflow should be included in investing activities.", "$150,000 cash inflow should be included in financing activities.", "$150,000 cash inflow should be included in operating activities.", "No entries should be made in the statement of cash flows"], answer: 3 },
+      { question: "Which one of the following would be classified under investing activities in a statement of cash flows prepared in accordance with IAS 7 Statement of Cash Flows?", options: ["Purchase of a machine", "Repayment of a loan from a bank", "Proceeds from a new issue of shares", "Dividend payments to shareholders"], answer: 0 },
+      { question: "Where in the consolidated statement of financial position would you find goodwill?", options: ["Tangible non-current assets", "Intangible non-current assets", "Current assets", "Equity"], answer: 1 },
+      { question: "Where in the consolidated statement of financial position would you find non-controlling interests?", options: ["Equity after ordinary share capital but before retained earnings.", "Equity after retained earnings but before the subtotal for parent's equity", " Equity after retained earnings and after the subtotal for parent's equity", "Non-current liabilities"], answer: 2 },
+      { question: "Which of the following expressions represents the double entry required to eliminate intra-group sales?", options: ["DR Consolidated sales CR Consolidated cost of sales", "DR Consolidated cost of sales CR Consolidated sales", "DR Consolidated sales CR Consolidated closing inventory", "DR Consolidated closing inventory CR Consolidated sales"], answer: 0 },
+      { question: "Which ONE of the following expressions describes the method of accounting for an associate in a consolidated statement of profit or loss.", options: ["Investor's share of profit before tax included immediately before profit before tax", "Investor's share of profit for the year included immediately before profit before tax", "Investor's share of profit before interest and tax included immediately after profit before tax", "Investor's share of profit for the year included immediately after profit before tax"], answer: 1 },
+      { question: "Which ONE of the following formulae represents the formula for calculating unrealised profit on intra-group sales?", options: ["Intra-group sales x Profit margin", "Intra-group sales x Proportion left in inventory x Group share", "Intra-group sales x Profit margin x Proportion left in inventory x Group share", "Intra-group sales x Profit margin x Proportion left in inventory"], answer: 3 },
+      { question: "Which ONE of the following expressions is the accounting entry required to remove unrealised profit from the group financial statements?", options: ["DR Cost of sales CR Closing inventory", "DR Closing inventory CR Cost of sales", "DR Closing inventory CR Group retained earnings", "DR Sales CR Closing inventory"], answer: 0 },
+      { question: "Which ONE of the following expressions describes the method of accounting used to include an associate in the consolidated statement of financial position? ", options: ["Cost", "Cost plus post-acquisition profits", "Market value", "Cost plus investor's share of post-acquisition profits"], answer: 3 },
+      { question: "Purple Co has a gross profit margin of 25% compared with 35% last year. <br><br>What plausible reason might management of Purple Co give to explain the fall in gross profit margin?", options: ["Sales have fallen from last year", "Prices of goods and services have increased but this has been passed on to customers", "Selling prices have been reduced to encourage more sales to be made", "Competition in the market has fallen due to the failure of a rival business"], answer: 2 },
+      { question: "Which ONE of the following expressions could be used to calculate asset turnover?", options: ["ROCE * Net profit margin", "Revenue * Current assets", "Revenue * Inventory", "Net profit margin * ROCE"], answer: 0 },
+      { question: "In the last financial year, the net profit margin of Grippa was 14.7% and asset tumover was 2.3 times. <br><br>What was the company's return on capital employed for the financial year? ", options: ["It cannot be calculated on the information given", "17%", "33.81%", " 6.39%"], answer: 2 },
+      { question: "Which of the following is likely to INCREASE a company's gearing?", options: ["Paying dividends on its equity shares", "Redeeming long-term loan notes", "Making a rights issue of equity shares", "Making a bonus issue of shares"], answer: 0 },
+      { question: "Which ONE of the following could improve a company's current ratio?", options: ["Persuading customers to pay more quickly", "Taking longer to pay suppliers", "Reducing the level of inventory", "Negotiating trade discounts from suppliers"], answer: 3 }
+      //{ question: "What is the capital of Japan?", options: ["1111", "2222", "3333", "44444"], answer: 2 }
+    ];
+
+    const quizContainer = document.getElementById('quiz');
+    const nextButton = document.getElementById('next-btn');
+    const startButton = document.getElementById('start-btn');
+    const timerElement = document.getElementById('timer');
+    const questionSelect = document.getElementById('question-select');
+    const appTitle = document.getElementById('app-title');
+
+    let currentQuestions = [];
+    let currentIndex = 0;
+    let score = 0;
+    let timer;
+    let timeRemaining = 1200; // Default 20 minutes in seconds
+
+    function startTimer() {
+      timer = setInterval(() => {
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        timerElement.textContent = `Time Left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+        if (timeRemaining === 0) {
+          clearInterval(timer);
+          showResults();
+        }
+
+        timeRemaining--;
+      }, 1000);
+    }
+
+    function getRandomQuestions(count) {
+      return [...questions].sort(() => 0.5 - Math.random()).slice(0, count);
+    }
+
+    function displayQuestion() {
+      const questionData = currentQuestions[currentIndex];
+      quizContainer.innerHTML = `
+        <div class="question">${questionData.question}</div>
+        <ul class="options">
+          ${questionData.options
+            .map(
+              (option, index) => `
+                <li>
+                  <label>
+                    <input type="radio" name="option" value="${index}">
+                    ${option}
+                  </label>
+                </li>
+              `
+            )
+            .join('')}
+        </ul>
+      `;
+    }
+
+    function startPractice() {
+      const questionCount = parseInt(questionSelect.value);
+
+      // Set time limit based on question count
+      if (questionCount === 10) {
+        timeRemaining = 900; // 15 minutes for 10 questions
+      } else if (questionCount === 15) {
+        timeRemaining = 1350; // 22.5 minutes for 15 questions
+      } else if (questionCount === 20) {
+        timeRemaining = 1800; // 30 minutes for 20 questions
+      }
+
+      // Change the app name to "Practice MCQ"
+      appTitle.textContent = "Practice MCQ";
+
+      currentQuestions = getRandomQuestions(questionCount);
+      currentIndex = 0;
+      score = 0;
+      startButton.style.display = 'none';
+      questionSelect.style.display = 'none';
+      quizContainer.style.display = 'block';
+      nextButton.style.display = 'inline-block';
+      timerElement.style.display = 'block'; // Show the timer only when quiz starts
+      startTimer();
+      displayQuestion();
+    }
+
+    function showResults() {
+      clearInterval(timer);
+      timerElement.style.display = 'none';
+      quizContainer.innerHTML = `
+        <div class="answer-container">
+          <h2>Your score: ${score}/${currentQuestions.length}</h2>
+          <button id="view-answers-btn">View Answers</button>
+          <button id="restart-btn">Restart Practice</button>
+        </div>`;
+
+      document.getElementById('view-answers-btn').addEventListener('click', () => {
+        quizContainer.innerHTML = `
+          <div class="answer-container">
+            ${currentQuestions
+              .map((question, index) => {
+                return `
+                  <div class="question">${question.question}</div>
+                  <ul class="options">
+                    ${question.options
+                      .map((option, i) => {
+                        let className = '';
+                        let hint = '';
+                        // Add text color based on whether it's correct or incorrect
+                        if (i === question.answer) {
+                          className = 'correct'; // Green for correct answer text
+                          hint = '<span class="hint correct">Correct</span>';
+                        } else if (i === parseInt(localStorage.getItem(`selected-${index}`))) {
+                          className = 'incorrect'; // Red for selected but incorrect answer text
+                          hint = '<span class="hint incorrect">Wrong Choice</span>';
+                        }
+                        return `<li class="${className}"><strong>${option}</strong> ${hint}</li>`;
+                      })
+                      .join('')}
+                  </ul>
+                `;
+              })
+              .join('')}
+          </div>`;
+
+        quizContainer.innerHTML += `<button id="restart-btn">Restart Practice</button>`;
+        document.getElementById('restart-btn').addEventListener('click', () => {
+          questionSelect.style.display = 'block'; // Show question selection dropdown again
+          quizContainer.style.display = 'none'; // Hide the quiz container
+          startButton.style.display = 'inline-block'; // Show the start button
+          appTitle.textContent = "ACCA-F3(Financial Accounting) - Practice MCQ"; // Reset the app title
+        });
+      });
+
+      document.getElementById('restart-btn').addEventListener('click', () => {
+        questionSelect.style.display = 'block'; // Show question selection dropdown again
+        quizContainer.style.display = 'none'; // Hide the quiz container
+        startButton.style.display = 'inline-block'; // Show the start button
+        appTitle.textContent = "ACCA-F3(Financial Accounting) - Practice MCQ"; // Reset the app title
+      });
+
+      nextButton.style.display = 'none';
+    }
+
+    nextButton.addEventListener('click', () => {
+      const selectedOption = document.querySelector(`input[name="option"]:checked`);
+      if (!selectedOption) {
+        alert('Please select an option!');
+        return;
+      }
+
+      // Store the selected answer to compare later when showing results
+      localStorage.setItem(`selected-${currentIndex}`, selectedOption.value);
+
+      if (parseInt(selectedOption.value) === currentQuestions[currentIndex].answer) {
+        score++;
+      }
+
+      if (currentIndex < currentQuestions.length - 1) {
+        currentIndex++;
+        displayQuestion();
+      } else {
+        showResults();
+      }
+    });
+
+    startButton.addEventListener('click', startPractice);
+  </script>
+  <h3>Copyright &copy; 2025 A2Z Teach(Rupak Kushwaha)</h3>
+</body>
+</html>
